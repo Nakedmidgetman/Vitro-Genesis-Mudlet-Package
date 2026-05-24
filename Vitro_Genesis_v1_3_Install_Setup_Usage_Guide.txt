@@ -1,0 +1,1328 @@
+Vitro Genesis Mudlet Package v1.3
+Install, Setup, and Usage Guide
+============================================================
+
+Package reviewed: Vitro Genesis V1.3.mpackage
+Guide version: 1.3
+Target client: Mudlet
+Target game: Genesis MUD
+
+Important v1.3 note:
+The Target Health HUD/gtarg system is not included in this package version. It was removed because it was too buggy. This guide intentionally does not include target health setup or gtarg commands.
+
+
+TABLE OF CONTENTS
+============================================================
+
+1. What this package does
+2. Installing the package
+3. First-time setup checklist
+4. Recommended setup order
+5. Core commands quick reference
+6. Startup and layout restore
+7. Vitals HUD
+8. Inventory HUD
+9. Session Tracker HUD
+10. Genesis Magic Map
+11. Regular Mudlet Mapper
+12. Mapper recovery, FollowFix, and GMCP anchoring
+13. Scout mode / GMCP room-link repair
+14. Room tracker / groom
+15. AutoHunter / ghunt
+16. Hunt profiles
+17. Path-mode hunting / gpath
+18. Loot automation / gloot
+19. Kill-all alias / ka
+20. Herbing / gherb
+21. Ships / gship and disembark automation
+22. Translators / gtrans
+23. Highlights and combat helper triggers
+24. Package help / phelp
+25. Common troubleshooting
+26. Suggested GitHub release notes
+
+
+1. WHAT THIS PACKAGE DOES
+============================================================
+
+Vitro Genesis is a Mudlet package for Genesis MUD. It adds several quality-of-life systems:
+
+- AutoHunter with room-range hunting, target scanning, delays, profile support, pause/resume, and session tracking.
+- Regular Mudlet Mapper follow/recovery support.
+- GMCP-based mapper anchoring and repair tools.
+- Genesis Magic Map display.
+- Vitals HUD.
+- Inventory/equipment HUD with blacklist filtering.
+- Session Tracker HUD.
+- Loot automation after kills.
+- Path-mode hunting for areas with special exits.
+- Manual scout mode for repairing GMCP room links.
+- Ship/disembark automation and highlighting.
+- Herbing helper.
+- Kill-all alias that scans the room and attacks multiple visible mobs.
+- Combat and utility highlights.
+- In-client package help through phelp.
+
+The package uses Genesis GMCP data when available, especially for room information and mapper recovery. It also uses normal Mudlet scripts, aliases, and triggers.
+
+
+2. INSTALLING THE PACKAGE
+============================================================
+
+Recommended fresh install:
+
+1. Open Mudlet.
+2. Open or create your Genesis profile.
+3. Connect to Genesis.
+4. In Mudlet, open Package Manager.
+5. Install/import the .mpackage file:
+   Vitro Genesis V1.3.mpackage
+6. Reconnect to Genesis or restart Mudlet.
+7. After login, wait for the startup restore message.
+8. Type:
+   phelp setup
+
+If the UI does not restore automatically after login, type:
+
+   gstartup restore
+
+Then check package status:
+
+   gstartup status
+   phelp
+   gvitals status
+   ginv status
+   ghunt status
+   gmap status
+
+
+3. FIRST-TIME SETUP CHECKLIST
+============================================================
+
+After installing, do these in order:
+
+1. Confirm the package loaded:
+   phelp
+
+2. Restore package windows:
+   gstartup restore
+
+3. Show the main HUDs:
+   gvitals show
+   ginv show
+   gmagic show
+
+4. Move HUDs where you want them.
+   For draggable HUDs, use their drag commands or click/drag if supported:
+   ginv grab
+   ginv drop
+
+5. Save layout:
+   glayout save
+   gmagic save
+   ginv save
+
+6. Check mapper state:
+   gmap status
+   gfollowfix audit
+
+7. If you are in a mapped area but the regular Mudlet Mapper is on the wrong room, fix it:
+   greanchor room <correct Mudlet room ID>
+   gfollowfix audit
+
+8. Clear scout range before repairing a new area:
+   gscout clearrange
+   gscout start
+
+9. Walk around manually and repair GMCP links:
+   look
+   gscout fix
+
+10. Stop scout mode when finished:
+   gscout stop
+   gmap save
+
+
+4. RECOMMENDED SETUP ORDER
+============================================================
+
+Use this order when setting up a new profile:
+
+A. Basic restore:
+   gstartup restore
+   glayout load
+   gmagic show
+   gvitals show
+   ginv show
+
+B. Save your window positions:
+   glayout save
+   gmagic save
+   ginv save
+
+C. Mapper verification:
+   gmap status
+   gfollowfix audit
+
+D. Scout/repair current mapped area:
+   gscout clearrange
+   gscout clear
+   gscout start
+
+E. Walk through the area:
+   look
+   gscout fix
+
+F. Turn normal systems back on:
+   gscout stop
+   gfollowfix on
+   gmap save
+
+G. Configure hunting:
+   ghunt targets <target names>
+   ghunt range <first room> <last room>
+   ghunt startroom <room>
+   ghunt save <profile>
+
+H. Test hunting briefly:
+   ghunt load <profile>
+   ghunt start
+   ghunt stop
+
+
+5. CORE COMMANDS QUICK REFERENCE
+============================================================
+
+Package help:
+   phelp
+   phelp setup
+   phelp mapper
+   phelp scout
+   phelp hunt
+   phelp path
+   phelp inventory
+   phelp loot
+   phelp all
+
+Startup:
+   gstartup restore
+   gstartup status
+   gstartup on
+   gstartup off
+   gstartup maptest
+
+Layout:
+   glayout save
+   glayout load
+   glayout status
+   glayout reset
+
+Vitals:
+   gvitals show
+   gvitals hide
+   gvitals toggle
+   gvitals refresh
+   gvitals status
+
+Inventory:
+   ginv show
+   ginv hide
+   ginv toggle
+   ginv refresh
+   ginv save
+   ginv load
+   ginv status
+   ginv grab
+   ginv drop
+
+Magic Map:
+   gmagic show
+   gmagic hide
+   gmagic lock
+   gmagic unlock
+   gmagic save
+   gmagic refresh
+
+Regular mapper:
+   gmap status
+   gmap follow
+   gmap unfollow
+   gmap center
+   gmap save
+   greanchor
+   greanchor room <room ID>
+   gfollowfix audit
+   gfollowfix on
+   gfollowfix off
+
+Scout:
+   gscout start
+   gscout stop
+   gscout status
+   gscout audit
+   gscout fix
+   gscout clearrange
+   gscout range <first> <last>
+   gscout clear
+
+AutoHunter:
+   ghunt status
+   ghunt start
+   ghunt stop
+   ghunt pause
+   ghunt resume
+   ghunt targets <targets>
+   ghunt range <first> <last>
+   ghunt startroom <room>
+   ghunt save <name>
+   ghunt load <name>
+   ghunt profiles
+
+Path mode:
+   gpath record <name>
+   gpath record stop
+   gpath list
+   gpath show <name>
+   gpath use <name>
+   gpath off
+   gpath delete <name>
+
+Loot:
+   gloot
+   gloot on
+   gloot off
+   gloot auto on
+   gloot auto off
+   gloot status
+   gloot delay <seconds>
+
+Kill all:
+   ka <target>
+   ka status
+
+Herbing:
+   gherb help
+   gherb command <herb>
+   gherb times <number>
+   gherb add <name> <path>
+   gherb list
+   gherb <path name>
+   gherb off
+
+Ships:
+   gship
+   gship on
+   gship off
+   gship auto on
+   gship auto off
+
+Translator:
+   gtrans on
+   gtrans off
+   gtrans status
+   gtrans help
+
+
+6. STARTUP AND LAYOUT RESTORE
+============================================================
+
+The Startup system restores the package UI after login.
+
+Main commands:
+
+   gstartup restore
+      Manually restores package UI systems.
+
+   gstartup status
+      Shows startup status and whether restore is enabled.
+
+   gstartup on
+      Enables automatic startup restore.
+
+   gstartup off
+      Disables automatic startup restore.
+
+   gstartup maptest
+      Tests opening/restoring the regular Mudlet Mapper.
+
+The Layout system saves and restores selected HUD/window positions.
+
+Main commands:
+
+   glayout save
+      Saves regular Mapper, AutoHunter HUD, and SessionTracker HUD positions.
+
+   glayout load
+      Loads saved layout.
+
+   glayout status
+      Shows saved positions.
+
+   glayout reset
+      Clears saved layout data.
+
+Separate saves:
+   gmagic save
+      Saves Genesis Magic Map position.
+
+   ginv save
+      Saves Inventory HUD position/size.
+
+Suggested after moving windows:
+
+   glayout save
+   gmagic save
+   ginv save
+
+
+7. VITALS HUD
+============================================================
+
+The Vitals HUD displays Genesis character vitals such as health, fatigue, mana, food, and drink.
+
+Commands:
+
+   gvitals show
+   gvitals hide
+   gvitals toggle
+   gvitals refresh
+   gvitals reload
+   gvitals status
+   gvitals test
+   gvitals debug
+
+Position/size helpers:
+
+   gvitals bottom
+   gvitals top
+   gvitals move <x> <y>
+   gvitals size <width> <height>
+   gvitals height <height>
+
+Example:
+
+   gvitals show
+   gvitals bottom
+   gvitals status
+
+The Vitals HUD depends on Genesis GMCP Char data. If it does not update, try:
+
+   gvitals reload
+   gstartup restore
+
+
+8. INVENTORY HUD
+============================================================
+
+The Inventory HUD shows:
+
+   ⚔ Wielding ⚔
+   🛡 Wearing 🛡
+   🎒 Carrying 🎒
+
+It intentionally ignores money/coins. It also filters out common autoload/weightless items.
+
+Current built-in blacklist includes:
+
+   tutorial journal
+   magic map
+   glowing magic map
+   black signature book
+   pair of combat boots
+   combat boots
+   newbie pin
+
+Commands:
+
+   ginv show
+      Shows the Inventory HUD.
+
+   ginv hide
+      Hides the Inventory HUD.
+
+   ginv toggle
+      Toggles visibility.
+
+   ginv refresh
+      Sends inventory command and updates the HUD.
+
+   ginv save
+      Saves position/size.
+
+   ginv load
+      Loads position/size.
+
+   ginv status
+      Shows Inventory HUD status and blacklist count.
+
+   ginv grab
+      Starts mouse drag if supported.
+
+   ginv drop
+      Stops mouse drag.
+
+   ginv move <x> <y>
+      Manually moves the HUD.
+
+   ginv size <width> <height>
+      Resizes the HUD.
+
+   ginv reset
+      Resets position/size.
+
+Auto-refresh:
+The package includes an Inventory Auto Refresh alias that can refresh the HUD after inventory-changing commands such as get, take, drop, put, wield, wear, remove, open, close, fillpack, and similar.
+
+If inventory becomes spammy:
+- Make sure the Inventory Capture trigger is installed and active.
+- Make sure the script uses send("i", false) during refresh.
+- Increase auto-refresh delay if needed.
+
+
+9. SESSION TRACKER HUD
+============================================================
+
+The Session Tracker tracks hunting/session data and can hook into AutoHunter.
+
+Commands:
+
+   gsession status
+   gsession reset
+   gsession hud show
+   gsession hud hide
+   gsession on
+   gsession off
+   gsession hook
+
+Use:
+
+   gsession hud show
+   gsession hook
+   glayout save
+
+This HUD is useful for tracking kills/runs/session progress while hunting.
+
+
+10. GENESIS MAGIC MAP
+============================================================
+
+Genesis Magic Map is separate from the regular Mudlet Mapper. It displays mud-side map data and is often more reliable for current location than the regular mapper.
+
+Commands:
+
+   gmagic show
+   gmagic hide
+   gmagic lock
+   gmagic unlock
+   gmagic save
+   gmagic refresh
+   gmagic help
+
+Recommended setup:
+
+   gmagic show
+   gmagic unlock
+   move it where you want
+   gmagic lock
+   gmagic save
+
+Important:
+If the regular Mudlet Mapper disagrees with the Magic Map, trust the Magic Map first. The Magic Map is based on mud-side information. The regular mapper can be wrong if GMCP anchors are stale or missing.
+
+
+11. REGULAR MUDLET MAPPER
+============================================================
+
+The regular Mudlet Mapper is Mudlet's normal map window. AutoHunter range mode uses regular Mudlet room IDs.
+
+Important concepts:
+
+Mudlet room ID:
+   A number assigned by Mudlet, such as 602 or 11545.
+
+Genesis GMCP room ID:
+   A mud-side text ID, such as zxO820 or FAt44.
+
+Room short:
+   The room title from GMCP, such as "A pier at the port of Gelan".
+
+The regular mapper must know which Mudlet room corresponds to the current GMCP room.
+
+Commands:
+
+   gmap status
+      Shows mapper state, last Mudlet room ID, last Genesis room ID, exits, and current GMCP Room.Info.
+
+   gmap follow
+      Enables mapper following.
+
+   gmap unfollow
+      Disables mapper following.
+
+   gmap center
+      Centers map on current room.
+
+   gmap save
+      Saves Mudlet map data.
+
+   gmap stop
+      Stops creating rooms.
+
+   gmap start
+      Starts fresh mapping. Do not use this just to repair an anchor unless you intentionally want mapping mode.
+
+   gmap wipe map
+      Dangerous. Only use if you intentionally want to wipe map data.
+
+Check current room:
+
+   gmap status
+
+Also useful:
+
+   lua echo("\nMudlet player room: " .. tostring(getPlayerRoom()) .. "\n")
+
+
+12. MAPPER RECOVERY, FOLLOWFIX, AND GMCP ANCHORING
+============================================================
+
+FollowFix listens for GMCP Room.Info and tries to snap the regular Mudlet Mapper to the matching Mudlet room.
+
+This works only if the current GMCP room ID is already saved on the correct Mudlet room.
+
+Commands:
+
+   gfollowfix on
+   gfollowfix off
+   gfollowfix status
+   gfollowfix check
+   gfollowfix reload
+   gfollowfix audit
+
+Most important command:
+
+   gfollowfix audit
+
+Audit shows whether the current GMCP room is linked to exactly one Mudlet room.
+
+Good state:
+
+   Matches: 1
+   Room: 602 key=genesis_id
+
+Bad states:
+
+   Matches: 0
+      Current GMCP room is not linked to any Mudlet room.
+
+   Matches: 2 or more
+      Duplicate anchors exist. The mapper may snap to the wrong room.
+
+Manual anchor:
+
+   greanchor room <room ID>
+
+Example:
+
+   greanchor room 602
+   gfollowfix audit
+
+Use greanchor when:
+- The Magic Map is correct but regular Mudlet Mapper is wrong.
+- You disembark from a ship and regular mapper remains in the old area.
+- You use special exits that Mudlet does not follow correctly.
+- FollowFix audit shows missing or duplicate anchors.
+
+Safe repair flow:
+
+   gfollowfix off
+   greanchor room <correct room ID>
+   gscout fix
+   gfollowfix audit
+   gfollowfix on
+
+
+13. SCOUT MODE / GMCP ROOM-LINK REPAIR
+============================================================
+
+Scout mode is used to repair or prime GMCP links on already mapped areas.
+
+It links:
+
+   current mud-side GMCP room ID -> current Mudlet room ID
+
+Commands:
+
+   gscout start
+      Starts scout mode.
+
+   gscout stop
+      Stops scout mode.
+
+   gscout status
+      Shows scout stats.
+
+   gscout audit
+      Audits current room and current GMCP info.
+
+   gscout fix
+      Links current GMCP room to current Mudlet room.
+
+   gscout clear
+      Clears scout counters.
+
+   gscout range <first> <last>
+      Sets scout range.
+
+   gscout clearrange
+   gscout norange
+      Clears scout range and allows any current Mudlet room.
+
+   gscout fromhunt
+      Manually pulls a range from ghunt/groute if available.
+
+Important v1.3 behavior:
+gscout start no longer automatically pulls the old ghunt range. This prevents old test ranges from blocking unrelated areas.
+
+Recommended repair workflow:
+
+   gfollowfix off
+   gscout clearrange
+   gscout clear
+   gscout start
+
+Then walk manually. In each room:
+
+   look
+
+If the regular Mudlet Mapper is on the correct room:
+
+   gscout fix
+
+If the regular Mudlet Mapper is on the wrong room:
+
+   greanchor room <correct Mudlet room ID>
+   gscout fix
+
+When finished:
+
+   gscout stop
+   gfollowfix on
+   gfollowfix audit
+   gmap save
+
+Warning:
+Do not blindly walk fast through a messy area while scout is linking. Scout saves the current GMCP ID to whatever Mudlet room the mapper currently thinks you are in. If the mapper marker is wrong, anchor first.
+
+
+14. ROOM TRACKER / GROOM
+============================================================
+
+The room tracker helps inspect and track current room information.
+
+Commands:
+
+   groom show
+   groom scan
+   groom clear
+   groom status
+   groom on
+   groom off
+   groom help
+   groom attack <target>
+
+Use:
+
+   groom scan
+
+This sends a look and shows tracked room info after a delay.
+
+Note:
+If groom shows a room number that does not match where you actually are, check:
+
+   gmap status
+   gfollowfix audit
+
+The regular mapper may be misanchored.
+
+
+15. AUTOHUNTER / GHUNT
+============================================================
+
+AutoHunter automates scanning, target selection, movement, attacks, looting support, and run/session logic.
+
+Core commands:
+
+   ghunt status
+   ghunt start
+   ghunt stop
+   ghunt pause
+   ghunt resume
+   ghunt reset
+
+Target setup:
+
+   ghunt targets bunny, rabbit
+   ghunt targets orc, goblin
+
+Room range setup:
+
+   ghunt range <first room> <last room>
+
+Example:
+
+   ghunt range 11516 11559
+
+Start/home room:
+
+   ghunt startroom <room ID>
+
+Example:
+
+   ghunt startroom 11511
+
+Looping:
+
+   ghunt loop on
+   ghunt loop off
+
+Delays:
+
+   ghunt delay scan <seconds>
+   ghunt delay attack <seconds>
+   ghunt delay move <seconds>
+   ghunt delay return <seconds>
+
+Example:
+
+   ghunt delay scan 1
+   ghunt delay attack 0.7
+   ghunt delay move 4
+
+Stats:
+
+   ghunt kills
+   ghunt resetkills
+   ghunt resetruns
+   ghunt timer
+
+Basic range-mode setup example:
+
+   ghunt targets bunny
+   ghunt range 11516 11559
+   ghunt startroom 11511
+   ghunt loop on
+   ghunt delay scan 1
+   ghunt delay attack 0.7
+   ghunt delay move 4
+   ghunt save bunnies
+
+Start hunting:
+
+   ghunt load bunnies
+   ghunt status
+   ghunt start
+
+Stop hunting:
+
+   ghunt stop
+
+Important:
+Range mode uses regular Mudlet Mapper room IDs, not GMCP IDs and not Magic Map coordinates. If the regular mapper is wrong, AutoHunter can be wrong. Prime/repair the area with gscout before long hunts.
+
+
+16. HUNT PROFILES
+============================================================
+
+Profiles save AutoHunter settings.
+
+Commands:
+
+   ghunt save <name>
+   ghunt load <name>
+   ghunt profiles
+   ghunt profile <name>
+   ghunt delete <name>
+   ghunt autosave on
+   ghunt autosave off
+   ghunt pstatus
+   ghunt phelp
+
+Example:
+
+   ghunt targets orc
+   ghunt range 600 650
+   ghunt startroom 602
+   ghunt loop on
+   ghunt save gelan-orcs
+
+Later:
+
+   ghunt load gelan-orcs
+   ghunt start
+
+Path-mode note:
+Path profiles are managed separately by gpath. For path hunting, load both:
+
+   ghunt load <hunt profile>
+   gpath use <path name>
+
+
+17. PATH-MODE HUNTING / GPATH
+============================================================
+
+Path mode moves using a recorded list of commands instead of relying on regular mapper routing.
+
+Use path mode for:
+- swim east / swim west
+- climb tree
+- enter portal
+- board/disembark situations
+- areas where normal mapper following is unreliable
+- special exits not represented as normal Mudlet exits
+
+Commands:
+
+   gpath record <name>
+      Starts recording a path.
+
+   gpath record stop
+      Stops and saves recording.
+
+   gpath record cancel
+      Cancels recording.
+
+   gpath list
+      Lists saved paths.
+
+   gpath show <name>
+      Shows path steps.
+
+   gpath use <name>
+      Activates a path.
+
+   gpath off
+      Disables path mode.
+
+   gpath pop
+      Removes last recorded step.
+
+   gpath clear
+      Clears active path steps.
+
+   gpath delete <name>
+   gpath del <name>
+      Deletes a saved path.
+
+Recording example:
+
+   gpath record riverbunnies
+   swim east
+   ne
+   sw
+   swim west
+   gpath record stop
+
+Use path:
+
+   gpath use riverbunnies
+   ghunt start
+
+Path mode still lets AutoHunter scan, attack, kill, and loot. Only movement changes.
+
+
+18. LOOT AUTOMATION / GLOOT
+============================================================
+
+Loot automation supports looting after kills.
+
+Commands:
+
+   gloot
+      Manual loot.
+
+   gloot on
+      Enables loot system.
+
+   gloot off
+      Disables loot system.
+
+   gloot auto on
+      Enables automatic looting after kill triggers.
+
+   gloot auto off
+      Disables automatic looting.
+
+   gloot status
+      Shows loot status.
+
+   gloot help
+      Shows loot help.
+
+   gloot delay <seconds>
+      Sets loot delay.
+
+The package includes a kill trigger matching:
+
+   You killed <target>.
+
+This can call the loot system after kills.
+
+Typical loot behavior includes taking valuable/imbued items, gems, coins, keeping imbued things, packing coins/gems, and running fillpack depending on the configured script.
+
+
+19. KILL-ALL ALIAS / KA
+============================================================
+
+The ka alias scans the room and attacks all visible targets matching the requested word.
+
+Command:
+
+   ka <target>
+
+Example:
+
+   ka orc
+
+Behavior:
+1. Sends a silent look.
+2. Captures room text.
+3. Counts matching mobs.
+4. Sends kill commands for all visible matches.
+5. Sends cdonk after the first kill command.
+
+Example room line:
+
+   Three orcish warriors.
+
+Command:
+
+   ka orc
+
+Expected output commands:
+
+   kill orc
+   cdonk
+   kill second orc
+   kill third orc
+
+The matcher supports prefix-style matching:
+
+   orc -> orc, orcs, orcish
+   rat -> rat, rats
+   goblin -> goblin, goblins
+
+Commands:
+
+   ka <target>
+   ka status
+
+Important:
+ka is a quick combat helper. It is not the same as full AutoHunter. It does not move through routes or manage hunting profiles.
+
+
+20. HERBING / GHERB
+============================================================
+
+Herbing helps automate repeated herb searches along saved movement paths.
+
+Commands:
+
+   gherb help
+   gherb status
+   gherb command <herb>
+   gherb cmd <herb>
+   gherb times <number>
+   gherb delay <moveDelay> <searchDelay>
+   gherb add <name> <path>
+   gherb list
+   gherb show <name>
+   gherb remove <name>
+   gherb delete <name>
+   gherb <path name> [optional herb name]
+   gherb off
+
+Examples:
+
+   gherb command suranie
+   gherb times 3
+   gherb add forest e, w, w, sw
+   gherb forest
+
+With optional herb override:
+
+   gherb forest suranie
+
+Special-exit path:
+
+   gherb add river swim east, ne, sw, swim west
+   gherb river suranie
+
+Recording:
+
+   gherb record <name>
+   gherb step <movement command>
+   gherb record stop
+   gherb record cancel
+
+Example:
+
+   gherb record river
+   gherb step swim east
+   gherb step ne
+   gherb step sw
+   gherb step swim west
+   gherb record stop
+   gherb river
+
+Herbing notes:
+- It does not use GMCP.
+- It reacts to Genesis herbing/search text.
+- Use attentively and follow Genesis rules.
+
+
+21. SHIPS / GSHIP AND DISEMBARK AUTOMATION
+============================================================
+
+The ship system highlights Genesis ShipLines messages and can auto-disembark.
+
+Commands:
+
+   gship
+      Shows status.
+
+   gship on
+      Enables ship highlighting/automation.
+
+   gship off
+      Disables ship system.
+
+   gship auto on
+      Enables auto-disembark.
+
+   gship auto off
+      Disables auto-disembark.
+
+Handled messages include:
+
+   The massive muscular male human shouts: We have arrived at Gelan! Disembark!
+   The massive muscular male human shouts: Next stop is Sparkle!
+   The massive muscular male human bellows: Last Call from Genesis ShipLines! ...
+   The massive muscular male human bellows: Let's go! See you at Sparkle!
+
+The script highlights:
+- ShipLines!
+- tickets
+- destination names
+- Disembark!
+
+Auto-disembark:
+When enabled, it sends:
+
+   disembark
+
+after the arrival message.
+
+Important mapper note:
+Ship travel can confuse the regular Mudlet Mapper because it is not normal directional movement. After disembarking, check:
+
+   gmap status
+   gfollowfix audit
+
+If the regular mapper stayed in the old city/ship room, fix it:
+
+   greanchor room <correct room ID>
+   gscout fix
+
+
+22. TRANSLATORS / GTRANS
+============================================================
+
+Translator commands:
+
+   gtrans on
+   gtrans off
+   gtrans status
+   gtrans help
+
+This system is included as GenesisTranslators. Use gtrans help in Mudlet for the exact behavior.
+
+
+23. HIGHLIGHTS AND COMBAT HELPER TRIGGERS
+============================================================
+
+This package includes several highlight/helper triggers.
+
+Monster death:
+   Pattern similar to:
+   The orcish runt died.
+
+You killed:
+   Pattern similar to:
+   You killed the orcish runt.
+
+Donk ready:
+   You are ready to donk again!
+
+The Donk trigger highlights the line and sends:
+
+   cdonk
+
+There are also item/property highlight triggers for imbuement and durability-like words.
+
+Examples of highlighted terms:
+- imbued
+- magical
+- enchanted
+- glowing
+- prime condition
+- excellent condition
+- good condition
+- worn/broken condition text
+
+
+24. PACKAGE HELP / PHELP
+============================================================
+
+The package includes in-client help.
+
+Commands:
+
+   phelp
+   phelp all
+   phelp setup
+   phelp tutorial
+   phelp startup
+   phelp layout
+   phelp mapper
+   phelp scout
+   phelp magic
+   phelp hunt
+   phelp path
+   phelp profiles
+   phelp vitals
+   phelp inventory
+   phelp loot
+   phelp route
+
+Recommended for first-time users:
+
+   phelp setup
+
+Use phelp as the in-game reference and this .txt file as the full external guide.
+
+
+25. COMMON TROUBLESHOOTING
+============================================================
+
+Problem: phelp does not work.
+Check:
+   - Package imported correctly.
+   - Package Help script exists and is active.
+   - Package Help alias exists and is active.
+
+Problem: UI did not restore after login.
+Run:
+   gstartup restore
+   gstartup status
+
+Problem: Login restore fires when seeing "Genesis ShipLines".
+The startup trigger must be strict. It should match a real login line such as:
+   ^Welcome to Genesis(?:\s.*)?$
+
+Do not use a broad trigger like:
+   Genesis
+
+Problem: Magic Map is correct, but regular Mudlet Mapper is wrong.
+Run:
+   gmap status
+   gfollowfix audit
+
+Then repair:
+   greanchor room <correct room ID>
+   gscout fix
+   gfollowfix audit
+
+Problem: gscout says room is outside an old range.
+Clear the range:
+   gscout clearrange
+   gscout start
+
+Problem: gscout still has old warning counters.
+Clear counters:
+   gscout clear
+   gscout status
+
+Problem: AutoHunter moves wrong.
+Likely mapper anchor issue.
+Check:
+   gmap status
+   gfollowfix audit
+
+Repair area:
+   gfollowfix off
+   gscout clearrange
+   gscout start
+   look
+   greanchor room <correct room ID>
+   gscout fix
+   gscout stop
+   gfollowfix on
+
+Problem: Inventory HUD shows too many autoload items.
+The current blacklist hides:
+   tutorial journal
+   magic map
+   glowing magic map
+   black signature book
+   pair of combat boots
+   combat boots
+   newbie pin
+
+If one still appears, it may have a slightly different exact name. Add that exact normalized name to the blacklist in the GenesisInventory script.
+
+Problem: Inventory command is spammy.
+Make sure Inventory refresh sends:
+   send("i", false)
+
+Make sure Inventory Capture trigger gags inventory lines while capturing.
+
+Problem: ka orc finds no orcs when line says "Three orcish warriors."
+Make sure GenesisKillAll version is:
+   1.2.0-room-scan-prefix-match
+
+Problem: ka sends too few or too many kill commands.
+Adjust:
+   GenesisKillAll.scanDelay
+   GenesisKillAll.maxKills
+
+Problem: Ship colors show raw tags like <span> or <bold>.
+Make sure Genesis Ships version is:
+   1.2.0-safe-cecho-no-html-no-bold
+
+Problem: Package exported empty folders.
+When exporting a public .mpackage, make sure the actual scripts, aliases, and triggers are selected. The easiest way is to keep everything under one top-level package group and export that group.
+
+Problem: Need a full backup.
+Export both:
+   1. Mudlet profile backup
+   2. Public .mpackage release
+
+
+26. SUGGESTED GITHUB RELEASE NOTES
+============================================================
+
+Suggested release title:
+   Vitro Genesis Mudlet Package v1.3
+
+Suggested short description:
+   Mudlet package for Genesis MUD with AutoHunter, mapper repair, Magic Map, vitals, inventory HUD, loot automation, herbing, ship automation, kill-all alias, and setup help.
+
+Suggested release notes:
+   Version 1.3 removes the experimental Target Health HUD/gtarg system due to instability. The package includes AutoHunter, mapper recovery and GMCP anchoring tools, gscout room-link repair, Genesis Magic Map support, Vitals HUD, Inventory HUD with blacklist filtering, Session Tracker, loot automation, path-mode hunting, herbing, ship/disembark highlighting, kill-all combat helper, and in-client phelp documentation.
+
+Suggested install note:
+   Download the .mpackage file from Releases, import it into Mudlet through Package Manager, reconnect to Genesis, then type phelp setup.
+
+Suggested warning:
+   Test the package in a fresh Mudlet profile before relying on it for long hunting sessions. Mapper/AutoHunter behavior depends on the regular Mudlet Mapper being correctly anchored to Genesis GMCP room data.
