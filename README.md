@@ -1,3 +1,5 @@
+Credits: Bo for his mapper and some random stuff.
+
 #1
 Download genesis Stuff.zip
 Unzip/Extract to C:/
