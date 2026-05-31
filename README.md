@@ -1,17 +1,23 @@
-## Download
+#1
+Download genesis Stuff.zip
+Unzip/Extract to C:/
+If file directory isn't correct you won't get custom vitals
+Location should look like this
+C:/Genesis Stuff/
 
-Go to the Releases page and download the latest `.mpackage` file.
+#2
+Preferably in a fresh Genesis Profile
+Click Packages on the top tool bar
+Than click "Install from file"
+Navigate to where you downloaded the .mpackage and click on it.
+Now Options>preferences>mapper 
+click load another map file
+navigate to genesis stuff>Genesis Map
+click on maps.dat
 
-Current release: Vitro Genesis Beta
 
-## Install
+#3
+When in game type gstart run (should do it automatically), 
+It should load your containers/windows. Your Magic Map, Genesis Mapper, Quests/Inventory, and Chat.
 
-1. Open Mudlet.
-2. Connect to your Genesis profile.
-3. Go to Package Manager.
-4. Install 'Vitro Genesis Beta.mpackage
-5. Reconnect or run `gstartup restore`.
-6. Type `phelp setup` in-game.
 
-7. *OPTIONAL* download the maps.dat file and install it through options > preferences > Mapper if you want alot of areas already mapped. (not 100% complete, but good enough)
-8. maps.dat file may take some figuring out how to link with the mapper. gmap help, and phelp should provide a walkthrough. If you can't figure it out use chatgpt.
